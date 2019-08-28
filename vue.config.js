@@ -2,14 +2,36 @@
 const resolve = dir => require('path').join(__dirname, dir)
 
 // 基础路径 注意发布之前要先修改这里
-let baseUrl = process.env.NODE_ENV === 'production' ? '/d2-admin-pm/' : '/'
+// let baseUrl = process.env.NODE_ENV === 'production' ? '/d2-admin-pm/' : '/'
 
 module.exports = {
-  baseUrl: baseUrl, // 根据你的实际情况更改这里
-  lintOnSave: false,
-  devServer: {
-    publicPath: baseUrl // 和 baseUrl 保持一致
-  },
+  baseUrl: '/', // 根据你的实际情况更改这里
+    outputDir: 'dist', // 默认dist
+    indexPath: 'index.html', // Default: 'index.html'
+  //   filenameHashing: true,
+  //   pages: undefined,
+  //   runtimeCompiler: false,
+  //   transpileDependencies: [],
+  //   productionSourceMap: false,
+  // lintOnSave: false,
+    devServer: {
+        host: '0.0.0.0',
+        port: "8081",//代理端口
+        https: false,
+        open: true,//项目启动时是否自动打开浏览器，我这里设置为false,不打开，true表示打开
+        hotOnly: false,
+        proxy: {
+            '/': {//代理api
+                target: 'https://easy-mock.com/mock/5b7a3879c474816c61856f3b/index/',//服务器api地址
+                // target: 'http://localhost:3000',//服务器api地址
+                changeOrigin: true,//是否跨域
+                ws: false,
+                pathRewrite: {//重写路径
+                    "^/": ''
+                }
+            }
+        }
+    },
   css: {
     loaderOptions: {
       // 设置 scss 公用变量文件
@@ -29,13 +51,6 @@ module.exports = {
       .test(/\.md$/)
       .use('text-loader')
       .loader('text-loader')
-      .end()
-    // i18n
-    config.module
-      .rule('i18n')
-      .resourceQuery(/blockType=i18n/)
-      .use('i18n')
-      .loader('@kazupon/vue-i18n-loader')
       .end()
     // svg
     const svgRule = config.module.rule('svg')

@@ -12,7 +12,7 @@
 
 <script>
     import {mapState, mapActions} from "vuex";
-    import * as sysService from "@/api/sys/sys";
+//    import * as sysService from "@/api/sys/sys";
 
     export default {
         computed: {

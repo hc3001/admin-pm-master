@@ -1,6 +1,6 @@
 <template>
     <d2-container class="page">
-        <div>后台系统</div>
+        <div>后台de系统</div>
     </d2-container>
 </template>
 

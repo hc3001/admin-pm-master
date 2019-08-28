@@ -29,8 +29,10 @@ function errorLog(err) {
 }
 
 // 创建一个 axios 实例
+console.log('process.env.VUE_APP_API', process.env.VUE_APP_API)
 const service = axios.create({
-    baseURL: process.env.VUE_APP_API,
+    // baseURL: process.env.VUE_APP_API,
+    baseURL: '',
     timeout: 20000 // 请求超时时间
 })
 

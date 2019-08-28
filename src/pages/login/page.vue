@@ -13,11 +13,13 @@
                         <el-form-item prop="username">
                             <el-input type="text" v-model="formLogin.username" placeholder="用户名">
                                 <i slot="prepend" class="fa fa-user-circle-o"></i>
+                                <d2-icon name="user-circle-o"/>
                             </el-input>
                         </el-form-item>
                         <el-form-item prop="password">
                             <el-input type="password" v-model="formLogin.password" placeholder="密码">
                                 <i slot="prepend" class="fa fa-keyboard-o"></i>
+                                <d2-icon name="fa-keyboard-o"/>
                             </el-input>
                         </el-form-item>
                         <el-button-group>
@@ -26,58 +28,21 @@
                     </el-form>
                 </el-card>
             </div>
-            <!-- 快速登录按钮 -->
-            <el-button size="default" type="info" class="button-help" @click="dialogVisible = true">
-                快速选择用户（测试权限）
-            </el-button>
         </div>
-        <el-dialog title="快速选择用户" :visible.sync="dialogVisible" width="400px">
-            <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
-                <el-col v-for="(user, index) in users" :key="index" :span="8">
-                    <div class="user-btn" @click="handleUserBtnClick(user)">
-                        <d2-icon name="user-circle-o"/>
-                        <span>{{user.name}}</span>
-                    </div>
-                </el-col>
-            </el-row>
-        </el-dialog>
     </div>
 </template>
 
 <script>
-    /* eslint-disable */
-    require("particles.js");
-    import config from "./config/default";
     import {mapActions} from "vuex";
-    import * as sysService from "@/api/sys/sys";
+//    import * as sysService from "@/api/sys/sys";
 
     export default {
         data() {
             return {
-                // 快速选择用户
-                dialogVisible: false,
-                users: [
-                    {
-                        name: "超级管理员",
-                        username: "admin",
-                        password: "123"
-                    },
-                    {
-                        name: "菜单管理员",
-                        username: "MenuManager",
-                        password: "123456"
-                    },
-                    {
-                        name: "无权限用户",
-                        username: "no",
-                        password: "123456"
-                    }
-                ],
                 // 表单
                 formLogin: {
-                    username: "admin",
-                    password: "123",
-                    code: "v9am"
+                    username: "",
+                    password: "",
                 },
                 // 校验
                 rules: {
@@ -90,29 +55,11 @@
             };
         },
         mounted() {
-            // 初始化例子插件
-            particlesJS("login", config);
+
         },
-        beforeDestroy() {
-            // 销毁 particlesJS
-            // thanks https://github.com/d2-projects/d2-admin/issues/65
-            // ref https://github.com/VincentGarreau/particles.js/issues/63
-            if(pJSDom && pJSDom.length > 0) {
-                pJSDom[0].pJS.fn.vendors.destroypJS();
-                pJSDom = [];
-            }
-        },
+
         methods: {
             ...mapActions("d2admin/account", ["login"]),
-            /**
-             * @description 接收选择一个用户快速登录的事件
-             * @param {Object} user 用户信息
-             */
-            handleUserBtnClick(user) {
-                this.formLogin.username = user.username;
-                this.formLogin.password = user.password;
-                this.submit();
-            },
             /**
              * @description 提交表单
              */
@@ -134,13 +81,9 @@
                     }
                 });
             },
-            resetDb() {
-                sysService.resetDb();
-            }
         }
-    };
+    }
 </script>
-
 <style lang="scss">
     @import "./style.scss";
 </style>
