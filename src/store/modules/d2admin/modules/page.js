@@ -198,8 +198,8 @@ export default {
                     // 如果这个页面是缓存的页面 将其在缓存设置中删除
                     commit('keepAliveRemove', tagName)
                 }
-                // 持久化
-                await dispatch('opend2db')
+                // // 持久化
+                // await dispatch('opend2db')
                 // 最后需要判断是否需要跳到首页
                 if(isCurrent) {
                     const {name = '', params = {}, query = {}} = newPage
@@ -216,102 +216,6 @@ export default {
         },
         /**
          * @class opened
-         * @description 关闭当前标签左边的标签
-         * @param {Object} state vuex state
-         * @param {Object} param { pageSelect: 当前选中的tagName, vm: vue }
-         */
-        closeLeft({state, commit, dispatch}, {pageSelect, vm} = {}) {
-            return new Promise(async resolve => {
-                const pageAim = pageSelect || state.current
-                let currentIndex = 0
-                state.opened.forEach((page, index) => {
-                    if(page.name === pageAim) {
-                        currentIndex = index
-                    }
-                })
-                if(currentIndex > 0) {
-                    // 删除打开的页面 并在缓存设置中删除
-                    state.opened.splice(1, currentIndex - 1).forEach(({name}) => commit('keepAliveRemove', name))
-                }
-                state.current = pageAim
-                if(vm && vm.$route.name !== pageAim) {
-                    vm.$router.push({
-                        name: pageAim
-                    })
-                }
-                // 持久化
-                await dispatch('opend2db')
-                // end
-                resolve()
-            })
-        },
-        /**
-         * @class opened
-         * @description 关闭当前标签右边的标签
-         * @param {Object} state vuex state
-         * @param {Object} param { pageSelect: 当前选中的tagName, vm: vue }
-         */
-        closeRight({state, commit, dispatch}, {pageSelect, vm} = {}) {
-            return new Promise(async resolve => {
-                const pageAim = pageSelect || state.current
-                let currentIndex = 0
-                state.opened.forEach((page, index) => {
-                    if(page.name === pageAim) {
-                        currentIndex = index
-                    }
-                })
-                // 删除打开的页面 并在缓存设置中删除
-                state.opened.splice(currentIndex + 1).forEach(({name}) => commit('keepAliveRemove', name))
-                // 设置当前的页面
-                state.current = pageAim
-                if(vm && vm.$route.name !== pageAim) {
-                    vm.$router.push({
-                        name: pageAim
-                    })
-                }
-                // 持久化
-                // await dispatch('opend2db')
-                // end
-                resolve()
-            })
-        },
-        /**
-         * @class opened
-         * @description 关闭当前激活之外的 tag
-         * @param {Object} state vuex state
-         * @param {Object} param { pageSelect: 当前选中的tagName, vm: vue }
-         */
-        closeOther({state, commit, dispatch}, {pageSelect, vm} = {}) {
-            return new Promise(async resolve => {
-                const pageAim = pageSelect || state.current
-                let currentIndex = 0
-                state.opened.forEach((page, index) => {
-                    if(page.name === pageAim) {
-                        currentIndex = index
-                    }
-                })
-                // 删除打开的页面数据 并更新缓存设置
-                if(currentIndex === 0) {
-                    state.opened.splice(1).forEach(({name}) => commit('keepAliveRemove', name))
-                } else {
-                    state.opened.splice(currentIndex + 1).forEach(({name}) => commit('keepAliveRemove', name))
-                    state.opened.splice(1, currentIndex - 1).forEach(({name}) => commit('keepAliveRemove', name))
-                }
-                // 设置新的页面
-                state.current = pageAim
-                if(vm && vm.$route.name !== pageAim) {
-                    vm.$router.push({
-                        name: pageAim
-                    })
-                }
-                // 持久化
-                // await dispatch('opend2db')
-                // end
-                resolve()
-            })
-        },
-        /**
-         * @class opened
          * @description 关闭所有 tag
          * @param {Object} state vuex state
          * @param {Object} vm vue
@@ -320,8 +224,8 @@ export default {
             return new Promise(async resolve => {
                 // 删除打开的页面 并在缓存设置中删除
                 state.opened.splice(1).forEach(({name}) => commit('keepAliveRemove', name))
-                // 持久化
-                await dispatch('opend2db')
+                // // 持久化
+                // await dispatch('opend2db')
                 // 关闭所有的标签页后需要判断一次现在是不是在首页
                 if(vm.$route.name !== 'index') {
                     vm.$router.push({

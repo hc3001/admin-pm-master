@@ -1,14 +1,13 @@
 <template>
-    <div class="d2-layout-header-aside-group" :class="{grayMode: grayActive}">
+    <div class="d2-layout-header-aside-group">
         <!-- 半透明遮罩 -->
         <div class="d2-layout-header-aside-mask"></div>
         <!-- 主体内容 -->
         <div class="d2-layout-header-aside-content" flex="dir:top">
             <!-- 顶栏 -->
-            <div class="d2-theme-header" :style="{opacity: this.searchActive ? 0.5 : 1}" flex-box="0" flex>
+            <div class="d2-theme-header" :style="{opacity: this.searchActive ? 0.5 : 1}" flex-box="0" flex v-show="!hideMenu">
                 <div class="logo-group" :style="{width: asideCollapse ? asideWidthCollapse : asideWidth}" flex-box="0">
-                    <img v-if="asideCollapse"
-                         :src="`${$baseUrl}image/theme/d2/logo/icon-only.png`">
+                    <img v-if="asideCollapse" :src="`${$baseUrl}image/theme/d2/logo/icon-only.png`">
                     <img v-else :src="`${$baseUrl}image/theme/d2/logo/all.png`">
                 </div>
                 <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
@@ -20,22 +19,16 @@
                     <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
                     <d2-header-search @click="handleSearchClick"/>
                     <d2-header-error-log/>
-                    <d2-header-fullscreen/>
-                    <!--<d2-header-theme/>-->
                     <d2-header-user/>
                 </div>
             </div>
             <!-- 下面 主体 -->
             <div class="d2-theme-container" flex-box="1" flex>
                 <!-- 主体 侧边栏 -->
-                <div
-                        flex-box="0"
-                        ref="aside"
-                        class="d2-theme-container-aside"
-                        :style="{
+                <div flex-box="0" ref="aside" class="d2-theme-container-aside" :style="{
             width: asideCollapse ? asideWidthCollapse : asideWidth,
             opacity: this.searchActive ? 0.5 : 1
-          }">
+          }" v-show="!hideMenu">
                     <d2-menu-side/>
                 </div>
                 <!-- 主体 -->
@@ -43,9 +36,7 @@
                     <!-- 搜索 -->
                     <transition name="fade-scale">
                         <div v-show="searchActive" class="d2-theme-container-main-layer" flex="dir:top">
-                            <d2-panel-search
-                                    ref="panelSearch"
-                                    @close="searchPanelClose"/>
+                            <d2-panel-search ref="panelSearch" @close="searchPanelClose"/>
                         </div>
                     </transition>
                     <!-- 内容 -->
@@ -84,9 +75,7 @@
             'd2-menu-side': () => import('./components/menu-side'),
             'd2-menu-header': () => import('./components/menu-header'),
             'd2-tabs': () => import('./components/tabs'),
-            'd2-header-fullscreen': () => import('./components/header-fullscreen'),
             'd2-header-search': () => import('./components/header-search'),
-//            'd2-header-theme': () => import('./components/header-theme'),
             'd2-header-user': () => import('./components/header-user'),
             'd2-header-error-log': () => import('./components/header-error-log')
         },
@@ -100,8 +89,7 @@
         },
         computed: {
             ...mapState('d2admin', {
-//                keepAlive: state => state.page.keepAlive,
-                grayActive: state => state.gray.active,
+                hideMenu: state => state.menu.hideMenu,
                 transitionActive: state => state.transition.active,
                 asideCollapse: state => state.menu.asideCollapse
             }),

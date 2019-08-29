@@ -31,7 +31,6 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@kazupon/vue-i18n-loader": "^0.3.0",
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-eslint": "^3.0.0",
     "@vue/cli-plugin-unit-jest": "^3.0.0",
@@ -47,6 +46,25 @@
     "svg-sprite-loader": "^3.8.0",
     "text-loader": "0.0.1",
     "vue-template-compiler": "^2.5.17"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "no-console": 0,
+      "no-control-regex": 0,
+      "no-unused-vars": 0,
+      "no-mixed-spaces-and-tabs": 0
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
   },
   "lint-staged": {
     "*.js": [

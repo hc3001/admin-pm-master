@@ -10,7 +10,9 @@ export default {
         aside: [],
         fullAside: [],
         // 侧边栏收缩
-        asideCollapse: setting.menu.asideCollapse
+        asideCollapse: setting.menu.asideCollapse,
+        //是否隐藏顶栏和侧板栏
+        hideMenu: false,
     },
     actions: {
         /**
@@ -23,12 +25,12 @@ export default {
                 // store 赋值
                 state.asideCollapse = collapse
                 // 持久化
-                await dispatch('d2admin/db/set', {
-                    dbName: 'sys',
-                    path: 'menu.asideCollapse',
-                    value: state.asideCollapse,
-                    user: true
-                }, {root: true})
+                // await dispatch('d2admin/db/set', {
+                //     dbName: 'sys',
+                //     path: 'menu.asideCollapse',
+                //     value: state.asideCollapse,
+                //     user: true
+                // }, {root: true})
                 // end
                 resolve()
             })
@@ -69,6 +71,10 @@ export default {
         //         resolve()
         //     })
         // }
+        //切换顶部侧边栏隐藏
+        toggleHide({state, dispatch}) {
+            state.hideMenu = !state.hideMenu
+        },
     },
     mutations: {
         /**
@@ -93,6 +99,6 @@ export default {
             // store 赋值
             state.fullAside = menu
             state.aside = menu
-        }
+        },
     }
 }

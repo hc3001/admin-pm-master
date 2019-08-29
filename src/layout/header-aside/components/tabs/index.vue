@@ -2,13 +2,8 @@
     <div class="d2-multiple-page-control-group" flex>
         <div class="d2-multiple-page-control-content" flex-box="1">
             <div class="d2-multiple-page-control-content-inner">
-                <d2-contextmenu
-                        :visible.sync="contextmenuFlag"
-                        :x="contentmenuX"
-                        :y="contentmenuY">
-                    <d2-contextmenu-list
-                            :menulist="tagName === 'index' ? contextmenuListIndex : contextmenuList"
-                            @rowClick="contextmenuClick"/>
+                <d2-contextmenu :visible.sync="contextmenuFlag" :x="contentmenuX" :y="contentmenuY">
+                    <d2-contextmenu-list :menulist="contextmenuListIndex"/>
                 </d2-contextmenu>
                 <el-tabs
                         class="d2-multiple-page-control"
@@ -16,8 +11,7 @@
                         type="card"
                         :closable="true"
                         @tab-click="handleClick"
-                        @edit="handleTabsEdit"
-                        @contextmenu.native="handleContextmenu">
+                        @edit="handleTabsEdit">
                     <el-tab-pane
                             v-for="(page, index) in opened"
                             :key="index"
@@ -26,31 +20,12 @@
                 </el-tabs>
             </div>
         </div>
-        <div
-                class="d2-multiple-page-control-btn"
-                flex-box="0">
-            <el-dropdown
-                    size="default"
-                    split-button
-                    @click="handleControlBtnClick"
-                    @command="command => handleControlItemClick(command)">
+        <div class="d2-multiple-page-control-btn" flex-box="0">
+            <el-dropdown size="default" split-button @click="handleControlBtnClick" @command="handleCommand">
                 <d2-icon name="times-circle"/>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="left">
-                        <d2-icon name="arrow-left" class="d2-mr-10"/>
-                        关闭左侧
-                    </el-dropdown-item>
-                    <el-dropdown-item command="right">
-                        <d2-icon name="arrow-right" class="d2-mr-10"/>
-                        关闭右侧
-                    </el-dropdown-item>
-                    <el-dropdown-item command="other">
-                        <d2-icon name="times" class="d2-mr-10"/>
-                        关闭其它
-                    </el-dropdown-item>
-                    <el-dropdown-item command="all">
-                        <d2-icon name="times-circle" class="d2-mr-10"/>
-                        全部关闭
+                    <el-dropdown-item command="fullscreen">
+                        <span>{{active ? '退出全屏' : '全屏'}}</span>
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -59,7 +34,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex'
+    import {mapState, mapActions, mapMutations} from 'vuex'
 
     export default {
         components: {
@@ -74,12 +49,6 @@
                 contextmenuListIndex: [
                     {icon: 'times-circle', title: '关闭全部', value: 'all'}
                 ],
-                contextmenuList: [
-                    {icon: 'arrow-left', title: '关闭左侧', value: 'left'},
-                    {icon: 'arrow-right', title: '关闭右侧', value: 'right'},
-                    {icon: 'times', title: '关闭其它', value: 'other'},
-                    {icon: 'times-circle', title: '关闭全部', value: 'all'}
-                ],
                 tagName: 'index'
             }
         },
@@ -87,71 +56,24 @@
             ...mapState('d2admin/page', [
                 'opened',
                 'current'
+            ]),
+            ...mapState('d2admin/fullscreen', [
+                'active'
             ])
         },
         methods: {
             ...mapActions('d2admin/page', [
                 'close',
-                'closeLeft',
-                'closeRight',
-                'closeOther',
                 'closeAll'
             ]),
+            ...mapActions('d2admin/fullscreen', [
+                'toggle'
+            ]),
             /**
-             * @description 右键菜单功能点击
+             * @description 触发全屏
              */
-            handleContextmenu(event) {
-                let target = event.target
-                // 解决 https://github.com/d2-projects/d2-admin/issues/54
-                let flag = false
-                if(target.className.indexOf('el-tabs__item') > -1) flag = true
-                else if(target.parentNode.className.indexOf('el-tabs__item') > -1) {
-                    target = target.parentNode
-                    flag = true
-                }
-                if(flag) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    this.contentmenuX = event.clientX
-                    this.contentmenuY = event.clientY
-                    this.tagName = target.getAttribute('aria-controls').slice(5)
-                    this.contextmenuFlag = true
-                }
-            },
-            /**
-             * @description 右键菜单的row-click事件
-             */
-            contextmenuClick(command) {
-                this.handleControlItemClick(command, this.tagName)
-            },
-            /**
-             * @description 接收点击关闭控制上选项的事件
-             */
-            handleControlItemClick(command, tagName = null) {
-                if(tagName) {
-                    this.contextmenuFlag = false
-                }
-                const params = {
-                    pageSelect: tagName,
-                    vm: this
-                }
-                switch(command) {
-                    case 'left':
-                        this.closeLeft(params)
-                        break
-                    case 'right':
-                        this.closeRight(params)
-                        break
-                    case 'other':
-                        this.closeOther(params)
-                        break
-                    case 'all':
-                        this.closeAll(this)
-                        break
-                    default:
-                        this.$message.error('无效的操作')
-                        break
-                }
+            handleCommand(command) {
+                this.toggle()
             },
             /**
              * @description 接收点击关闭控制上按钮的事件

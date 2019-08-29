@@ -10,11 +10,11 @@ export default {
         /**
          * @description 初始化监听
          */
-        listen({commit}) {
+        listen({commit, dispatch}) {
             return new Promise(resolve => {
                 if(screenfull.enabled) {
                     screenfull.on('change', () => {
-                        console.log('1')
+                        dispatch('d2admin/menu/toggleHide',null, {root: true})
                         if(!screenfull.isFullscreen) {
                             commit('set', false)
                         }
