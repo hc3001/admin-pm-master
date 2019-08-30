@@ -3,7 +3,7 @@
         <div class="d2-theme-header-menu__content" ref="content" flex-box="1" flex>
             <div class="d2-theme-header-menu__scroll" ref="scroll" flex-box="0"
                  :style="'transform: translateX(' + currentTranslateX + 'px);'">
-                <el-menu mode="horizontal" :default-active="active" @select="handleMenuSelect">
+                <el-menu mode="horizontal" :default-active="active" @select="handleHeaderMenuSelect">
                     <template v-for="(menu, menuIndex) in header">
                         <d2-layout-header-aside-menu-item :menu="menu" :key="menuIndex"/>
                     </template>
