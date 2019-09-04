@@ -14,11 +14,12 @@
     "better-scroll": "^1.12.1",
     "codemirror": "^5.42.2",
     "dayjs": "^1.6.7",
-    "element-ui": "^2.4.11",
+    "element-ui": "^2.9.2",
     "flex.css": "^1.1.7",
     "fuse.js": "^3.2.1",
     "hotkeys-js": "^3.3.6",
     "js-cookie": "^2.2.0",
+    "jsencrypt": "^3.0.0-rc.1",
     "jsonlint": "^1.6.3",
     "lodash": "^4.17.11",
     "lowdb": "^1.0.0",
@@ -45,7 +46,8 @@
     "script-loader": "^0.7.2",
     "svg-sprite-loader": "^3.8.0",
     "text-loader": "0.0.1",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "jsencrypt": "^3.0.0-rc.1"
   },
   "eslintConfig": {
     "root": true,

@@ -43,3 +43,20 @@ $prefix: d2;
     font-size: 14px;
     position: relative;
 }
+
+.el-table{
+    font-size: 12px;
+    thead th{
+        background:#F5F7FA;
+    }
+    th, td{
+        padding: 6px 0;
+    }
+    .el-link{
+        font-size: 12px;
+    }
+}
+
+body .el-table th.gutter{
+    display: table-cell!important;
+}

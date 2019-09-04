@@ -18,11 +18,29 @@ export function getUserPermissionInfo() {
     })
 }
 
+export function getStaffInfoList(data) {
+    return request({
+        url: '/user/staff/list',
+        method: 'post',
+        params: data,
+    })
+}
+
 export function getUserPagedList(query) {
     return request({
         url: '/user/pagedlist',
         method: 'get',
-        params: query
+        params: query,
+        loading: {
+            type: 'loading',
+            options: {
+                fullscreen: true,
+                lock: true,
+                text: '加载中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+            }
+        }
     })
 }
 

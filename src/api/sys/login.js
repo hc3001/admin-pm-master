@@ -1,5 +1,12 @@
 import request from '@/plugin/axios'
 
+export function getSecurityCode() {
+    return request({
+        url: '/rest/sysmanager/securityCode',
+        method: 'get'
+    })
+}
+
 export function AccountLogin(data) {
     return request({
         url: '/auth/login',
@@ -17,3 +24,4 @@ export function AccountLogin(data) {
         }
     })
 }
+

@@ -46,6 +46,7 @@ service.interceptors.request.use(
             }
         }
         loading.show(config)
+        console.log('ss', !(/^https:\/\/|http:\/\//.test(config.url)))
         // 在请求发送之前做一些处理
         if(!(/^https:\/\/|http:\/\//.test(config.url))) {
             const token = util.cookies.get('token')
@@ -68,7 +69,7 @@ service.interceptors.response.use(
     response => {
         loading.hide(response.config)
         const res = response.data;
-        if(res.statusCode !== 200) {
+        if(res.statusCode != 200) {
             Message({
                 message: res.msg,
                 type: 'error',

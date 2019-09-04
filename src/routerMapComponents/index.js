@@ -4,10 +4,10 @@ import layoutHeaderAside from '@/layout/header-aside/layout'
 let componentMaps = {
     "layoutHeaderAside": layoutHeaderAside,
     "menu": () => import(/* webpackChunkName: "menu" */'@/pages/sys/menu'),
-    "route": () => import(/* webpackChunkName: "route" */'@/pages/sys/route'),
     "role": () => import(/* webpackChunkName: "role" */'@/pages/sys/role'),
     "user": () => import(/* webpackChunkName: "user" */'@/pages/sys/user'),
-    "interface": () => import(/* webpackChunkName: "interface" */'@/pages/sys/interface'),
+    "salesman": () => import(/* webpackChunkName: "user" */'@/pages/reconciliation/salesman'),
+    "datainquiry": () => import(/* webpackChunkName: "user" */'@/pages/reconciliation/datainquiry'),
 }
 files.keys().forEach((key) => {
     if(key === './index.js') return

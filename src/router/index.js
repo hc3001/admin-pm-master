@@ -4,24 +4,15 @@ import VueRouter from 'vue-router'
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-
 import store from '@/store/index'
-
 import util from '@/libs/util.js'
 
 // 路由数据
 import routes from './routes'
 
-// 固定菜单与路由
-import menuHeader from '@/menu/header'
-import menuAside from '@/menu/aside'
 import {frameInRoutes} from '@/router/routes'
 //路由与组件映射关系
 import routerMapComponents from '@/routerMapComponents'
-//模拟动态菜单与路由
-//import { permissionMenu, permissionRouter } from '@/mock/permissionMenuAndRouter'
-//代码生成器生成的菜单与路由
-import autoGenerateMenusAndRouters from '@/development'
 import * as userService from "@/api/sys/user";
 
 Vue.use(VueRouter)
@@ -31,7 +22,18 @@ const router = new VueRouter({
     routes
 })
 
-let permissionMenu, permissionRouter = []
+let permissionRouter = []
+// 生成菜单的首页路由
+let indexRoute = [
+    {
+        path: '/index',
+        name: 'index',
+        meta: {
+            icon: 'home',
+            title: '首页',
+        }
+    },
+]
 
 let permission = {
     functions: [],
@@ -41,7 +43,7 @@ let permission = {
 
 //标记是否已经拉取权限信息
 let isFetchPermissionInfo = false
-
+console.log('routerMapComponents', routerMapComponents)
 let fetchPermissionInfo = async() => {
     //处理动态添加的路由
     const formatRoutes = function(routes) {
@@ -52,29 +54,8 @@ let fetchPermissionInfo = async() => {
             }
         })
     }
-    
-    // const formatRoutesByComponentPath = function (routes) {
-    //   routes.forEach(route => {
-    //     route.component = function (resolve) {
-    //       require([`../${route.componentPath}.vue`], resolve)
-    //     }
-    //     if (route.children) {
-    //       formatRoutesByComponentPath(route.children)
-    //     }
-    //   })
-    // }
-    
-    // const formatRoutesByComponentPath = function (routes) {
-    //   routes.forEach(route => {
-    //     route.component = () => import(`../${route.componentPath}.vue`)
-    //     if (route.children) {
-    //       formatRoutesByComponentPath(route.children)
-    //     }
-    //   })
-    // }
     try {
         let userPermissionInfo = await userService.getUserPermissionInfo()
-        permissionMenu = userPermissionInfo.accessMenus
         permissionRouter = userPermissionInfo.accessRoutes
         permission.functions = userPermissionInfo.userPermissions
         permission.roles = userPermissionInfo.userRoles
@@ -84,13 +65,8 @@ let fetchPermissionInfo = async() => {
         console.log(ex)
     }
     
-    //组合代码生成器生成的菜单和路由
-    permissionMenu = [...permissionMenu, ...autoGenerateMenusAndRouters.menus]
-    permissionRouter = [...permissionRouter, ...autoGenerateMenusAndRouters.routers]
-    
     formatRoutes(permissionRouter)
-    let allMenuAside = [...menuAside, ...permissionMenu]
-    let allMenuHeader = [...menuHeader, ...permissionMenu]
+    let allMenuHeader = [...indexRoute, ...permissionRouter]
     //动态添加路由
     router.addRoutes(permissionRouter);
     // 处理路由 得到每一级的路由设置
@@ -98,7 +74,7 @@ let fetchPermissionInfo = async() => {
     // 设置顶栏菜单
     store.commit('d2admin/menu/headerSet', allMenuHeader)
     // 设置侧边栏菜单
-    store.commit('d2admin/menu/fullAsideSet', allMenuAside)
+    store.commit('d2admin/menu/fullAsideSet', allMenuHeader)
     // 初始化菜单搜索功能
     store.commit('d2admin/search/init', allMenuHeader)
     // 设置权限信息
@@ -167,5 +143,4 @@ router.afterEach(to => {
     // 更改标题
     util.title(to.meta.title)
 })
-console.log('router', router)
 export default router

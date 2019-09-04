@@ -1,9 +1,9 @@
 <template>
     <el-menu-item :index="menu.path || uniqueId">
-        <i v-if="menu.icon" :class="`fa fa-${menu.icon}`"></i>
-        <d2-icon-svg v-else-if="menu.iconSvg" :name="menu.iconSvg"/>
+        <i v-if="menu.meta.icon" :class="`fa fa-${menu.meta.icon}`"></i>
+        <d2-icon-svg v-else-if="menu.meta.iconSvg" :name="menu.meta.iconSvg"/>
         <i v-else class="fa fa-file-o"></i>
-        <span slot="title">{{menu.title || '未命名菜单'}}</span>
+        <span slot="title">{{menu.meta.title || '未命名菜单'}}</span>
     </el-menu-item>
 </template>
 

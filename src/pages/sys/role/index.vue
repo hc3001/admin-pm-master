@@ -78,19 +78,15 @@
             </el-pagination>
         </template>
         <edit-form :role="role" v-model="editFormVisible" @submit="getTableData"/>
-        <role-permission :role="role" v-model="permissionDialogVisible"/>
-        <role-user :role="role" v-model="roleUserDialogVisible"/>
     </d2-container>
 </template>
 <script>
     import * as roleService from "@/api/sys/role";
     import editForm from "./editForm";
-    import rolePermission from "./rolePermission";
-    import roleUser from "./roleUser";
 
     export default {
         name: "RolePage",
-        components: {editForm, rolePermission, roleUser},
+        components: {editForm},
         data() {
             return {
                 searchForm: {},

@@ -6,7 +6,7 @@ import App from './App'
 // store
 import store from '@/store/index'
 // 模拟数据
-import '@/mock'
+// import '@/mock'
 // 核心插件
 import d2Admin from '@/plugin/d2admin'
 // 路由

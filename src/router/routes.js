@@ -1,5 +1,3 @@
-import demo from './modules/demo'
-
 import layoutHeaderAside from '@/layout/header-aside/layout'
 
 const meta = {requiresAuth: true}
@@ -46,7 +44,6 @@ const frameIn = [
             }
         ]
     },
-    demo
 ]
 
 /**

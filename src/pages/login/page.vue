@@ -33,8 +33,9 @@
 </template>
 
 <script>
-    import {mapActions} from "vuex";
-//    import * as sysService from "@/api/sys/sys";
+    import {mapActions} from "vuex"
+    import JSEncrypt from 'jsencrypt'
+    import * as sysLogin from "@/api/sys/login"
 
     export default {
         data() {
@@ -51,20 +52,32 @@
                     ],
                     password: [{required: true, message: "请输入密码", trigger: "blur"}],
                     code: [{required: true, message: "请输入验证码", trigger: "blur"}]
-                }
+                },
+                //公钥
+                SecurityCode: '',
             };
         },
         mounted() {
-
+//            this.getsecurityCode()
         },
 
         methods: {
             ...mapActions("d2admin/account", ["login"]),
+            //加密账号和密码
+            encryCode(publicKey) {
+                let rsa = new JSEncrypt()
+                rsa.setPublicKey(publicKey)
+                this.formLogin.username = rsa.encrypt(this.formLogin.username)
+                this.formLogin.password = rsa.encrypt(this.formLogin.password)
+            },
             /**
              * @description 提交表单
              */
             // 提交登录信息
-            submit() {
+            async submit() {
+                //* @description 获取公钥
+                const code = await sysLogin.getSecurityCode()
+                this.encryCode(code)
                 this.$refs.loginForm.validate(valid => {
                     if(valid) {
                         // 登录

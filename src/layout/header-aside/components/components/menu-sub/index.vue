@@ -1,10 +1,10 @@
 <template>
     <el-submenu :index="menu.path || uniqueId">
         <template slot="title">
-            <i v-if="menu.icon" :class="`fa fa-${menu.icon}`"></i>
-            <d2-icon-svg v-else-if="menu.iconSvg" :name="menu.iconSvg"/>
+            <i v-if="menu.meta.icon" :class="`fa fa-${menu.meta.icon}`"></i>
+            <d2-icon-svg v-else-if="menu.meta.iconSvg" :name="menu.meta.iconSvg"/>
             <i v-else class="fa fa-folder-o"></i>
-            <span slot="title">{{menu.title}}</span>
+            <span slot="title">{{menu.meta.title}}</span>
         </template>
         <template v-for="(child, childIndex) in menu.children">
             <d2-layout-header-aside-menu-item v-if="child.children === undefined" :menu="child" :key="childIndex"/>
